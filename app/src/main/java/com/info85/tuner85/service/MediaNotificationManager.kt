@@ -7,8 +7,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaStyleNotificationHelper
 import com.info85.tuner85.MainActivity
@@ -84,7 +85,7 @@ class MediaNotificationManager(private val context: Context) {
             createActionIntent(ACTION_NEXT)
         )
 
-        val largeIcon = albumArt ?: BitmapFactory.decodeResource(context.resources, R.drawable.ic_radio)
+        val largeIcon = albumArt ?: vectorToBitmap(R.drawable.ic_radio)
 
         return NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(station?.name ?: context.getString(R.string.app_name))
@@ -111,5 +112,18 @@ class MediaNotificationManager(private val context: Context) {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+    }
+
+    private fun vectorToBitmap(drawableId: Int): Bitmap? {
+        val drawable = ContextCompat.getDrawable(context, drawableId) ?: return null
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth.coerceAtLeast(1),
+            drawable.intrinsicHeight.coerceAtLeast(1),
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
     }
 }
