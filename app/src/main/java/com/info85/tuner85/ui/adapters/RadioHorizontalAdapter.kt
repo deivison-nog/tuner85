@@ -17,8 +17,13 @@ class RadioHorizontalAdapter(
     private var currentStation: RadioStation? = null
 
     fun setCurrentStation(station: RadioStation?) {
+        val old = currentStation
         currentStation = station
-        notifyDataSetChanged()
+        val list = currentList
+        val oldPos = if (old != null) list.indexOf(old) else -1
+        val newPos = if (station != null) list.indexOf(station) else -1
+        if (oldPos >= 0) notifyItemChanged(oldPos)
+        if (newPos >= 0) notifyItemChanged(newPos)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
