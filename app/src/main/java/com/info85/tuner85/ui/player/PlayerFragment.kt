@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.info85.tuner85.MainActivity
 import com.info85.tuner85.R
 import com.info85.tuner85.databinding.FragmentPlayerBinding
 import com.info85.tuner85.ui.adapters.RadioHorizontalAdapter
@@ -38,10 +39,17 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         audioManager = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        setupMenuButton()
         setupRecyclerView()
         setupControls()
         setupVolumeControl()
         observeViewModel()
+    }
+
+    private fun setupMenuButton() {
+        binding.btnMenu.setOnClickListener {
+            (requireActivity() as? MainActivity)?.openDrawer()
+        }
     }
 
     private fun setupRecyclerView() {
@@ -81,6 +89,18 @@ class PlayerFragment : Fragment() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
+
+        binding.btnVolumeDown.setOnClickListener {
+            val vol = (binding.seekBarVolume.progress - 1).coerceAtLeast(0)
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vol, 0)
+            binding.seekBarVolume.progress = vol
+        }
+
+        binding.btnVolumeUp.setOnClickListener {
+            val vol = (binding.seekBarVolume.progress + 1).coerceAtMost(maxVolume)
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vol, 0)
+            binding.seekBarVolume.progress = vol
+        }
     }
 
     private fun observeViewModel() {
@@ -90,8 +110,8 @@ class PlayerFragment : Fragment() {
                 binding.tvRadioNameLarge.text = station.name
                 binding.ivRadioLogo.load(station.logoUrl) {
                     crossfade(true)
-                    placeholder(R.drawable.ic_radio)
-                    error(R.drawable.ic_radio)
+                    placeholder(R.drawable.logo)
+                    error(R.drawable.logo)
                     transformations(CircleCropTransformation())
                 }
                 horizontalAdapter.setCurrentStation(station)
@@ -105,7 +125,7 @@ class PlayerFragment : Fragment() {
         }
 
         viewModel.radioList.observe(viewLifecycleOwner) { stations ->
-            horizontalAdapter.submitList(stations)
+            horizontalAdapter.submitList(stations.take(5))
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->

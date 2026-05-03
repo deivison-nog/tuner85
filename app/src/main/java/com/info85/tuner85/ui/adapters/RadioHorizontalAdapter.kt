@@ -44,8 +44,8 @@ class RadioHorizontalAdapter(
             binding.tvRadioName.text = station.name
             binding.ivRadioLogo.load(station.logoUrl) {
                 crossfade(true)
-                placeholder(R.drawable.ic_radio)
-                error(R.drawable.ic_radio)
+                placeholder(R.drawable.logo)
+                error(R.drawable.logo)
             }
             binding.root.isSelected = station == currentStation
             binding.root.setOnClickListener {

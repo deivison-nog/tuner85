@@ -8,6 +8,15 @@
     android:background="@color/backgroundColor"
     android:padding="16dp">
 
+    <ImageButton
+        android:id="@+id/btnMenu"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_menu"
+        android:tint="@color/white"
+        android:contentDescription="Menu" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -42,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_radio" />
+            android:src="@drawable/logo" />
 
     </androidx.cardview.widget.CardView>
 
@@ -67,11 +76,18 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_radio"
-            android:tint="@color/white" />
+        <TextView
+            android:id="@+id/btnVolumeDown"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:text="-"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
 
         <SeekBar
             android:id="@+id/seekBarVolume"
@@ -82,11 +98,18 @@
             android:progressTint="@color/colorAccent"
             android:thumbTint="@color/colorAccent" />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_radio"
-            android:tint="@color/white" />
+        <TextView
+            android:id="@+id/btnVolumeUp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:text="+"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
 
     </LinearLayout>
 

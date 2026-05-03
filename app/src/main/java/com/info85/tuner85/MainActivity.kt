@@ -4,11 +4,9 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -23,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: PlayerViewModel by viewModels()
     private lateinit var drawerAdapter: RadioListAdapter
-    private lateinit var toggle: ActionBarDrawerToggle
 
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -34,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupToolbar()
         setupNavigationDrawer()
         setupFragment(savedInstanceState)
         setupBackNavigation()
@@ -43,22 +39,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.bindService(this)
     }
 
-    private fun setupToolbar() {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = getString(R.string.app_name)
-    }
-
     private fun setupNavigationDrawer() {
-        toggle = ActionBarDrawerToggle(
-            this,
-            binding.drawerLayout,
-            binding.toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
         drawerAdapter = RadioListAdapter { station, index ->
             viewModel.selectStation(station, index)
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -76,6 +57,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.currentStation.observe(this) { station ->
             drawerAdapter.setCurrentStation(station)
         }
+    }
+
+    fun openDrawer() {
+        binding.drawerLayout.openDrawer(GravityCompat.START)
     }
 
     private fun setupFragment(savedInstanceState: Bundle?) {
@@ -96,11 +81,6 @@ class MainActivity : AppCompatActivity() {
                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) return true
-        return super.onOptionsItemSelected(item)
     }
 
     private fun setupBackNavigation() {
