@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Radio Tuner 85</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="other_stations">Other Stations</string>
+    <string name="all_stations">All Stations</string>
+    <string name="streaming">Streaming...</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="error_loading">Failed to load stations</string>
+    <string name="error_streaming">Streaming error</string>
+    <string name="retry">Retry</string>
+</resources>
