@@ -71,7 +71,7 @@ class M3UParser {
     }
 
     private fun extractLogoUrl(extinf: String): String {
-        val tvgLogoRegex = Regex("""tvg-logo="([^"]*?)"""")
+        val tvgLogoRegex = Regex("""tvg-logo="([^"]*)"""")
         return tvgLogoRegex.find(extinf)?.groupValues?.get(1) ?: ""
     }
 }
