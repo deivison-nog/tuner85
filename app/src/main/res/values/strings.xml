@@ -10,7 +10,7 @@
     <string name="streaming">Streaming...</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="error_loading">Failed to load stations</string>
+    <string name="search_radio">Buscar rádio…</string>
     <string name="error_streaming">Streaming error</string>
     <string name="retry">Retry</string>
 </resources>

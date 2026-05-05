@@ -103,6 +103,14 @@ class PlayerFragment : Fragment() {
         }
     }
 
+    private var fullStationList: List<com.info85.tuner85.data.model.RadioStation> = emptyList()
+
+    private fun updateOtherStations() {
+        val current = viewModel.currentStation.value
+        val others = fullStationList.filter { it != current }.shuffled().take(5)
+        horizontalAdapter.submitList(others)
+    }
+
     private fun observeViewModel() {
         viewModel.currentStation.observe(viewLifecycleOwner) { station ->
             if (station != null) {
@@ -115,6 +123,7 @@ class PlayerFragment : Fragment() {
                     transformations(CircleCropTransformation())
                 }
                 horizontalAdapter.setCurrentStation(station)
+                updateOtherStations()
             }
         }
 
@@ -125,7 +134,8 @@ class PlayerFragment : Fragment() {
         }
 
         viewModel.radioList.observe(viewLifecycleOwner) { stations ->
-            horizontalAdapter.submitList(stations.take(5))
+            fullStationList = stations
+            updateOtherStations()
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->

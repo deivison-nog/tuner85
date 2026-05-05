@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -15,12 +17,19 @@ import com.info85.tuner85.databinding.ActivityMainBinding
 import com.info85.tuner85.ui.adapters.RadioListAdapter
 import com.info85.tuner85.ui.player.PlayerFragment
 import com.info85.tuner85.ui.player.PlayerViewModel
+import java.text.Normalizer
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: PlayerViewModel by viewModels()
     private lateinit var drawerAdapter: RadioListAdapter
+    private var fullDrawerList: List<com.info85.tuner85.data.model.RadioStation> = emptyList()
+
+    private fun normalizeText(text: String): String {
+        val normalized = Normalizer.normalize(text, Normalizer.Form.NFD)
+        return normalized.replace(Regex("\\p{InCombiningDiacriticalMarks}+"), "").lowercase()
+    }
 
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -40,7 +49,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNavigationDrawer() {
-        drawerAdapter = RadioListAdapter { station, index ->
+        drawerAdapter = RadioListAdapter { station, _ ->
+            val index = fullDrawerList.indexOf(station).coerceAtLeast(0)
             viewModel.selectStation(station, index)
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
@@ -51,12 +61,31 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.radioList.observe(this) { stations ->
-            drawerAdapter.submitList(stations)
+            fullDrawerList = stations
+            applyDrawerSearch(binding.etSearchRadio.text?.toString() ?: "")
         }
 
         viewModel.currentStation.observe(this) { station ->
             drawerAdapter.setCurrentStation(station)
         }
+
+        binding.etSearchRadio.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                applyDrawerSearch(s?.toString() ?: "")
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun applyDrawerSearch(query: String) {
+        val filtered = if (query.isBlank()) {
+            fullDrawerList
+        } else {
+            val q = normalizeText(query)
+            fullDrawerList.filter { normalizeText(it.name).contains(q) }
+        }
+        drawerAdapter.submitList(filtered)
     }
 
     fun openDrawer() {

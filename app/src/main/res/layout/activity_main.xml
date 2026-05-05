@@ -27,6 +27,31 @@
 
             <include layout="@layout/nav_header" />
 
+            <EditText
+                android:id="@+id/etSearchRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:hint="@string/search_radio"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_search"
+                android:drawableTint="@color/white"
+                android:paddingStart="4dp"
+                android:singleLine="true" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="12dp"
+                android:background="@color/white"
+                android:alpha="0.3" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_drawer_radios"
                 android:layout_width="match_parent"
