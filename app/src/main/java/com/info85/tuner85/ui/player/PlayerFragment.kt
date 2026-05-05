@@ -114,7 +114,6 @@ class PlayerFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.currentStation.observe(viewLifecycleOwner) { station ->
             if (station != null) {
-                binding.tvRadioName.text = station.name
                 binding.tvRadioNameLarge.text = station.name
                 binding.ivRadioLogo.load(station.logoUrl) {
                     crossfade(true)

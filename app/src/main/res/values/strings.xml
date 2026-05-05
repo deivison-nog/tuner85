@@ -11,6 +11,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="search_radio">Buscar rádio…</string>
+    <string name="tuner_name">Tuner 85</string>
+    <string name="app_version">v1.0</string>
     <string name="error_streaming">Streaming error</string>
     <string name="retry">Retry</string>
 </resources>
