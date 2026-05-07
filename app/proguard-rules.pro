@@ -1,0 +1,2 @@
+-keep class com.info85.tuner85.** { *; }
+-keep class androidx.media3.** { *; }
